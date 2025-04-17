@@ -1,41 +1,57 @@
+const puppeteer = require('puppeteer-core'); // or 'puppeteer' if you want to use the full version
 const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
-const puppeteer = require('puppeteer-core');  // Ensure you're using puppeteer-core if you're using a headless browser
-
 const app = express();
 
+// Initialize WhatsApp client
 let userStatus = {};
-
 const client = new Client({
     authStrategy: new LocalAuth()
 });
 
+// Puppeteer launch function
+async function launchPuppeteer() {
+    try {
+        // Make sure to pass correct flags for a cloud environment
+        const browser = await puppeteer.launch({
+            headless: true,
+            args: [
+                '--no-sandbox',
+                '--disable-setuid-sandbox',
+                '--disable-gpu',
+                '--no-zygote',
+                '--disable-software-rasterizer',
+            ],
+            executablePath: '/usr/bin/chromium-browser' // This may need to be changed based on your environment
+        });
+        const page = await browser.newPage();
+        await page.goto('http://example.com'); // Replace with your URL
+        await browser.close();
+    } catch (error) {
+        console.error('Error launching Puppeteer:', error);
+    }
+}
+
+// Launch Puppeteer (to ensure it's working)
+launchPuppeteer().catch(err => console.log('Error running Puppeteer:', err));
+
+// Event listener for QR code generation
 client.on('qr', (qr) => {
     qrcode.generate(qr, { small: true });
 });
 
+// Event listener when the client is ready and authenticated
 client.on('ready', () => {
     console.log('Client is ready!');
 });
 
-// Add a function to launch puppeteer with no-sandbox flag
-async function launchPuppeteer() {
-    const browser = await puppeteer.launch({
-        headless: true,
-        args: ['--no-sandbox', '--disable-setuid-sandbox']  // Necessary flags for running in a root environment
-    });
-    const page = await browser.newPage();
-    await page.goto('http://example.com');  // Example URL, change to your needs
-    await browser.close();
-}
-
+// Event listener for incoming messages
 client.on('message', async (message) => {
     const userPhone = message.from;
 
-    // Your logic to handle first-time users or check if user is interacting with the bot
     if (!userStatus[userPhone]) {
         userStatus[userPhone] = true;
 
@@ -73,7 +89,7 @@ client.on('message', async (message) => {
 });
 
 async function sendRoomRates(userPhone) {
-    const rates = ` 
+    const rates = `
 🌟 *Room Rates for Our Cottages* 🌟
 
 1️⃣ *Premium Mountain View* – ₹8,500/night  
@@ -89,17 +105,8 @@ async function sendRoomRates(userPhone) {
     await client.sendMessage(userPhone, rates);
 }
 
-// Initialize the WhatsApp client
 client.initialize();
-
-// Express server setup
-app.get('/ping', (req, res) => {
-    res.send('pong');
-});
 
 app.listen(3000, () => {
     console.log('Server running on port 3000');
-    
-    // Optionally, you can call Puppeteer to perform an action when the server is up
-    launchPuppeteer().catch(error => console.error('Puppeteer launch failed:', error));
 });
