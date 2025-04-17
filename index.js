@@ -3,7 +3,11 @@ const qrcode = require('qrcode-terminal');
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
+const puppeteer = require('puppeteer-core');  // Ensure you're using puppeteer-core if you're using a headless browser
+
 const app = express();
+
+let userStatus = {};
 
 const client = new Client({
     authStrategy: new LocalAuth()
@@ -14,18 +18,27 @@ client.on('qr', (qr) => {
 });
 
 client.on('ready', () => {
-    console.log('✅ WhatsApp bot is ready!');
+    console.log('Client is ready!');
 });
+
+// Add a function to launch puppeteer with no-sandbox flag
+async function launchPuppeteer() {
+    const browser = await puppeteer.launch({
+        headless: true,
+        args: ['--no-sandbox', '--disable-setuid-sandbox']  // Necessary flags for running in a root environment
+    });
+    const page = await browser.newPage();
+    await page.goto('http://example.com');  // Example URL, change to your needs
+    await browser.close();
+}
 
 client.on('message', async (message) => {
     const userPhone = message.from;
-    const userText = message.body.trim().toLowerCase();
 
-    // Trigger only on greetings
-    const greetings = ['hi', 'hello', 'hai', 'helo'];
-    const isGreeting = greetings.includes(userText);
+    // Your logic to handle first-time users or check if user is interacting with the bot
+    if (!userStatus[userPhone]) {
+        userStatus[userPhone] = true;
 
-    if (isGreeting) {
         await client.sendMessage(userPhone, 'Hello! Here are the images of our cottages:');
 
         const roomFolders = [
@@ -60,7 +73,7 @@ client.on('message', async (message) => {
 });
 
 async function sendRoomRates(userPhone) {
-    const rates = `
+    const rates = ` 
 🌟 *Room Rates for Our Cottages* 🌟
 
 1️⃣ *Premium Mountain View* – ₹8,500/night  
@@ -76,8 +89,17 @@ async function sendRoomRates(userPhone) {
     await client.sendMessage(userPhone, rates);
 }
 
+// Initialize the WhatsApp client
 client.initialize();
 
+// Express server setup
+app.get('/ping', (req, res) => {
+    res.send('pong');
+});
+
 app.listen(3000, () => {
-    console.log('🚀 Express server running on port 3000');
+    console.log('Server running on port 3000');
+    
+    // Optionally, you can call Puppeteer to perform an action when the server is up
+    launchPuppeteer().catch(error => console.error('Puppeteer launch failed:', error));
 });
