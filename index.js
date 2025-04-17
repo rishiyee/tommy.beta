@@ -1,4 +1,3 @@
-const puppeteer = require('puppeteer-core'); // or 'puppeteer' if you want to use the full version
 const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
 const express = require('express');
@@ -6,55 +5,27 @@ const fs = require('fs');
 const path = require('path');
 const app = express();
 
-// Initialize WhatsApp client
-let userStatus = {};
 const client = new Client({
     authStrategy: new LocalAuth()
 });
 
-// Puppeteer launch function
-async function launchPuppeteer() {
-    try {
-        // Make sure to pass correct flags for a cloud environment
-        const browser = await puppeteer.launch({
-            headless: true,
-            args: [
-                '--no-sandbox',
-                '--disable-setuid-sandbox',
-                '--disable-gpu',
-                '--no-zygote',
-                '--disable-software-rasterizer',
-            ],
-            executablePath: '/usr/bin/chromium-browser' // This may need to be changed based on your environment
-        });
-        const page = await browser.newPage();
-        await page.goto('http://example.com'); // Replace with your URL
-        await browser.close();
-    } catch (error) {
-        console.error('Error launching Puppeteer:', error);
-    }
-}
-
-// Launch Puppeteer (to ensure it's working)
-launchPuppeteer().catch(err => console.log('Error running Puppeteer:', err));
-
-// Event listener for QR code generation
 client.on('qr', (qr) => {
     qrcode.generate(qr, { small: true });
 });
 
-// Event listener when the client is ready and authenticated
 client.on('ready', () => {
-    console.log('Client is ready!');
+    console.log('✅ WhatsApp bot is ready!');
 });
 
-// Event listener for incoming messages
 client.on('message', async (message) => {
     const userPhone = message.from;
+    const userText = message.body.trim().toLowerCase();
 
-    if (!userStatus[userPhone]) {
-        userStatus[userPhone] = true;
+    // Trigger only on greetings
+    const greetings = ['hi', 'hello', 'hai', 'helo'];
+    const isGreeting = greetings.includes(userText);
 
+    if (isGreeting) {
         await client.sendMessage(userPhone, 'Hello! Here are the images of our cottages:');
 
         const roomFolders = [
@@ -108,5 +79,5 @@ async function sendRoomRates(userPhone) {
 client.initialize();
 
 app.listen(3000, () => {
-    console.log('Server running on port 3000');
+    console.log('🚀 Express server running on port 3000');
 });
