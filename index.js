@@ -1,3 +1,44 @@
+const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
+const qrcode = require('qrcode-terminal');
+const fs = require('fs');
+const path = require('path');
+
+// Delay utility
+const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+const client = new Client({
+    authStrategy: new LocalAuth(),
+    puppeteer: {
+        args: ['--no-sandbox', '--disable-setuid-sandbox'], // ✅ Fix for Railway or root environments
+    }
+});
+
+client.on('qr', (qr) => {
+    qrcode.generate(qr, { small: true });
+});
+
+client.on('ready', async () => {
+    console.log('✅ WhatsApp bot is ready!');
+
+    const adminNumber = '911234567890@c.us'; // Replace with your admin number
+    await client.sendMessage(adminNumber, '🤖 Bot is online and ready!');
+
+    const chats = await client.getChats();
+    for (const chat of chats) {
+        if (chat.unreadCount > 0) {
+            const messages = await chat.fetchMessages({ limit: chat.unreadCount });
+            for (const msg of messages) {
+                console.log(`📥 Unread from ${chat.name || chat.id.user}: "${msg.body}"`);
+                await handleMessage(msg);
+            }
+        }
+    }
+});
+
+client.on('message', async (message) => {
+    await handleMessage(message);
+});
+
 async function handleMessage(message) {
     const userPhone = message.from;
     const userText = message.body.trim().toLowerCase();
@@ -55,3 +96,23 @@ async function handleMessage(message) {
         console.log(`📤 Replied to ${userPhone}: "${handoverMsg}"`);
     }
 }
+
+async function sendRoomRates(userPhone) {
+    const rates = `
+🌟 *Room Rates for Our Cottages* 🌟
+
+1️⃣ *Premium Mountain View* – ₹8,500/night  
+2️⃣ *Premium Pool & Mountain View* – ₹8,500/night  
+3️⃣ *Deluxe Pool & Forest View* – ₹8,000/night  
+4️⃣ *Deluxe Lawn View* – ₹8,000/night  
+5️⃣ *Honeymoon Suite* – ₹15,000/night  
+6️⃣ *Pool Villa* – ₹13,000/night
+
+✅ All rooms include modern amenities for your comfort.  
+📞 Contact us for booking assistance!
+    `;
+    await client.sendMessage(userPhone, rates);
+    console.log(`📤 Sent room rates to ${userPhone}`);
+}
+
+client.initialize();
