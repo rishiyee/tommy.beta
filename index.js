@@ -7,7 +7,10 @@ const path = require('path');
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 const client = new Client({
-    authStrategy: new LocalAuth()
+    authStrategy: new LocalAuth(),
+    puppeteer: {
+        args: ['--no-sandbox', '--disable-setuid-sandbox'], // ✅ Fix for Railway or root environments
+    }
 });
 
 client.on('qr', (qr) => {
@@ -17,11 +20,9 @@ client.on('qr', (qr) => {
 client.on('ready', async () => {
     console.log('✅ WhatsApp bot is ready!');
 
-    // ✅ Send startup message to a predefined number
-    const adminNumber = '911234567890@c.us'; // Replace with your number
+    const adminNumber = '911234567890@c.us'; // Replace with your admin number
     await client.sendMessage(adminNumber, '🤖 Bot is online and ready!');
 
-    // ✅ Handle unread messages
     const chats = await client.getChats();
     for (const chat of chats) {
         if (chat.unreadCount > 0) {
@@ -34,19 +35,16 @@ client.on('ready', async () => {
     }
 });
 
-// Message listener
 client.on('message', async (message) => {
     await handleMessage(message);
 });
 
-// Message handler
 async function handleMessage(message) {
     const userPhone = message.from;
     const userText = message.body.trim().toLowerCase();
 
     console.log(`📥 Message received from ${userPhone}: "${userText}"`);
 
-    // Test command
     if (userText === 'test') {
         const reply = 'Live ✅';
         await client.sendMessage(userPhone, reply);
@@ -54,7 +52,6 @@ async function handleMessage(message) {
         return;
     }
 
-    // Greetings
     const greetings = ['hi', 'hello', 'hai', 'helo', 'hlo'];
     const isGreeting = greetings.includes(userText);
 
@@ -63,8 +60,7 @@ async function handleMessage(message) {
         await client.sendMessage(userPhone, greetingMsg);
         console.log(`📤 Replied to ${userPhone}: "${greetingMsg}"`);
 
-        // ⏱️ 10-second delay before continuing
-        await delay(5000);
+        await delay(10000); // ⏱️ 10-second delay after greeting
 
         const roomFolders = [
             { name: 'Deluxe Lawn View', folder: 'deluxe_lawn_view', emoji: '👆' },
