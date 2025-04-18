@@ -1,9 +1,10 @@
 const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
-const express = require('express');
 const fs = require('fs');
 const path = require('path');
-const app = express();
+
+// Delay utility
+const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 const client = new Client({
     authStrategy: new LocalAuth()
@@ -13,15 +14,36 @@ client.on('qr', (qr) => {
     qrcode.generate(qr, { small: true });
 });
 
-client.on('ready', () => {
+client.on('ready', async () => {
     console.log('✅ WhatsApp bot is ready!');
+
+    // ✅ Send startup message to a predefined number
+    const adminNumber = '911234567890@c.us'; // Replace with your number
+    await client.sendMessage(adminNumber, '🤖 Bot is online and ready!');
+
+    // ✅ Handle unread messages
+    const chats = await client.getChats();
+    for (const chat of chats) {
+        if (chat.unreadCount > 0) {
+            const messages = await chat.fetchMessages({ limit: chat.unreadCount });
+            for (const msg of messages) {
+                console.log(`📥 Unread from ${chat.name || chat.id.user}: "${msg.body}"`);
+                await handleMessage(msg);
+            }
+        }
+    }
 });
 
+// Message listener
 client.on('message', async (message) => {
+    await handleMessage(message);
+});
+
+// Message handler
+async function handleMessage(message) {
     const userPhone = message.from;
     const userText = message.body.trim().toLowerCase();
 
-    // Log received message
     console.log(`📥 Message received from ${userPhone}: "${userText}"`);
 
     // Test command
@@ -32,7 +54,7 @@ client.on('message', async (message) => {
         return;
     }
 
-    // Greetings trigger
+    // Greetings
     const greetings = ['hi', 'hello', 'hai', 'helo', 'hlo'];
     const isGreeting = greetings.includes(userText);
 
@@ -40,6 +62,9 @@ client.on('message', async (message) => {
         const greetingMsg = 'Hello! Here are the images of our cottages:';
         await client.sendMessage(userPhone, greetingMsg);
         console.log(`📤 Replied to ${userPhone}: "${greetingMsg}"`);
+
+        // ⏱️ 10-second delay before continuing
+        await delay(5000);
 
         const roomFolders = [
             { name: 'Deluxe Lawn View', folder: 'deluxe_lawn_view', emoji: '👆' },
@@ -52,7 +77,6 @@ client.on('message', async (message) => {
 
         for (const room of roomFolders) {
             const folderPath = path.join(__dirname, 'images', room.folder);
-
             const files = fs.readdirSync(folderPath).filter(file =>
                 file.endsWith('.jpg') || file.endsWith('.jpeg') || file.endsWith('.png')
             );
@@ -75,7 +99,7 @@ client.on('message', async (message) => {
         await client.sendMessage(userPhone, handoverMsg);
         console.log(`📤 Replied to ${userPhone}: "${handoverMsg}"`);
     }
-});
+}
 
 async function sendRoomRates(userPhone) {
     const rates = `
@@ -96,7 +120,3 @@ async function sendRoomRates(userPhone) {
 }
 
 client.initialize();
-
-app.listen(3000, () => {
-    console.log('🚀 Express server running on port 3000');
-});
