@@ -21,12 +21,25 @@ client.on('message', async (message) => {
     const userPhone = message.from;
     const userText = message.body.trim().toLowerCase();
 
-    // Trigger only on greetings
-    const greetings = ['hi', 'hello', 'hai', 'helo','hlo'];
+    // Log received message
+    console.log(`📥 Message received from ${userPhone}: "${userText}"`);
+
+    // Test command
+    if (userText === 'test') {
+        const reply = 'Live ✅';
+        await client.sendMessage(userPhone, reply);
+        console.log(`📤 Replied to ${userPhone}: "${reply}"`);
+        return;
+    }
+
+    // Greetings trigger
+    const greetings = ['hi', 'hello', 'hai', 'helo', 'hlo'];
     const isGreeting = greetings.includes(userText);
 
     if (isGreeting) {
-        await client.sendMessage(userPhone, 'Hello! Here are the images of our cottages:');
+        const greetingMsg = 'Hello! Here are the images of our cottages:';
+        await client.sendMessage(userPhone, greetingMsg);
+        console.log(`📤 Replied to ${userPhone}: "${greetingMsg}"`);
 
         const roomFolders = [
             { name: 'Deluxe Lawn View', folder: 'deluxe_lawn_view', emoji: '👆' },
@@ -48,14 +61,19 @@ client.on('message', async (message) => {
                 const filePath = path.join(folderPath, file);
                 const media = await MessageMedia.fromFilePath(filePath);
                 await client.sendMessage(userPhone, media);
+                console.log(`📤 Sent image: ${file} from ${room.folder}`);
             }
 
-            await client.sendMessage(userPhone, `*${room.name}* ${room.emoji}`);
+            const roomMsg = `*${room.name}* ${room.emoji}`;
+            await client.sendMessage(userPhone, roomMsg);
+            console.log(`📤 Replied to ${userPhone}: "${roomMsg}"`);
         }
 
         await sendRoomRates(userPhone);
 
-        await client.sendMessage(userPhone, 'Our team will now take over and manage further queries. Please stay tuned.');
+        const handoverMsg = 'Our team will now take over and manage further queries. Please stay tuned.';
+        await client.sendMessage(userPhone, handoverMsg);
+        console.log(`📤 Replied to ${userPhone}: "${handoverMsg}"`);
     }
 });
 
@@ -74,6 +92,7 @@ async function sendRoomRates(userPhone) {
 📞 Contact us for booking assistance!
     `;
     await client.sendMessage(userPhone, rates);
+    console.log(`📤 Sent room rates to ${userPhone}`);
 }
 
 client.initialize();
