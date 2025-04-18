@@ -1,40 +1,19 @@
-2025/04/17-10:31:36.943 1d10 Reusing MANIFEST C:\Users\Hrishi\Desktop\Beta\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
-2025/04/17-10:31:36.944 1d10 Recovering log #155
-2025/04/17-10:31:36.992 1d10 Reusing old log C:\Users\Hrishi\Desktop\Beta\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000155.log 
-2025/04/17-10:31:38.853 4b88 Level-0 table #161: started
-2025/04/17-10:31:38.879 4b88 Level-0 table #161: 1841283 bytes OK
-2025/04/17-10:31:38.881 4b88 Delete type=0 #155
-2025/04/17-10:31:38.882 970 Manual compaction at level-0 from '\x003\x00\x00\x00' @ 72057594037927935 : 1 .. '\x004\x00\x00\x00' @ 0 : 0; will stop at (end)
-2025/04/17-10:31:40.892 970 Compacting 1@1 + 2@2 files
-2025/04/17-10:31:40.955 970 Generated table #162@1: 42623 keys, 2260225 bytes
-2025/04/17-10:31:41.013 970 Generated table #163@1: 36922 keys, 2048178 bytes
-2025/04/17-10:31:41.013 970 Compacted 1@1 + 2@2 files => 4308403 bytes
-2025/04/17-10:31:41.013 970 compacted to: files[ 0 0 2 0 0 0 0 ]
-2025/04/17-10:32:33.226 1d10 Level-0 table #165: started
-2025/04/17-10:32:33.255 1d10 Level-0 table #165: 2085360 bytes OK
-2025/04/17-10:32:33.257 1d10 Delete type=2 #157
-2025/04/17-10:32:33.258 1d10 Delete type=2 #158
-2025/04/17-10:32:33.258 1d10 Delete type=0 #160
-2025/04/17-10:32:33.258 1d10 Delete type=2 #161
-2025/04/17-10:32:33.279 1d10 Compacting 1@1 + 2@2 files
-2025/04/17-10:32:33.373 1d10 Generated table #166@1: 45208 keys, 2264843 bytes
-2025/04/17-10:32:33.420 1d10 Generated table #167@1: 14852 keys, 2147097 bytes
-2025/04/17-10:32:33.450 1d10 Generated table #168@1: 22809 keys, 410989 bytes
-2025/04/17-10:32:33.450 1d10 Compacted 1@1 + 2@2 files => 4822929 bytes
-2025/04/17-10:32:33.451 1d10 compacted to: files[ 0 0 3 0 0 0 0 ]
-2025/04/17-10:32:33.451 1d10 Delete type=2 #162
-2025/04/17-10:32:33.451 1d10 Delete type=2 #163
-2025/04/17-10:32:33.451 1d10 Delete type=2 #165
-2025/04/17-10:32:36.123 4b88 Level-0 table #170: started
-2025/04/17-10:32:36.155 4b88 Level-0 table #170: 2768975 bytes OK
-2025/04/17-10:32:36.157 4b88 Delete type=0 #164
-2025/04/17-10:32:37.282 970 Compacting 1@1 + 3@2 files
-2025/04/17-10:32:37.371 970 Generated table #171@1: 46642 keys, 2274445 bytes
-2025/04/17-10:32:37.410 970 Generated table #172@1: 10698 keys, 2142153 bytes
-2025/04/17-10:32:37.454 970 Generated table #173@1: 27545 keys, 594266 bytes
-2025/04/17-10:32:37.454 970 Compacted 1@1 + 3@2 files => 5010864 bytes
-2025/04/17-10:32:37.455 970 compacted to: files[ 0 0 3 0 0 0 0 ]
-2025/04/17-10:32:37.455 970 Delete type=2 #166
-2025/04/17-10:32:37.455 970 Delete type=2 #167
-2025/04/17-10:32:37.455 970 Delete type=2 #168
-2025/04/17-10:32:37.455 970 Delete type=2 #170
+2025/04/18-06:29:33.777 8248 Reusing MANIFEST C:\Users\USER\Desktop\Beta\tommy.beta\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2025/04/18-06:29:33.778 8248 Recovering log #140
+2025/04/18-06:29:33.810 8248 Reusing old log C:\Users\USER\Desktop\Beta\tommy.beta\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000140.log 
+2025/04/18-06:29:38.333 67b0 Level-0 table #148: started
+2025/04/18-06:29:38.344 67b0 Level-0 table #148: 713310 bytes OK
+2025/04/18-06:29:38.346 67b0 Delete type=0 #140
+2025/04/18-06:29:38.347 67b0 Manual compaction at level-0 from '\x00\x1f\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00 \x00\x00\x00' @ 0 : 0; will stop at (end)
+2025/04/18-06:29:39.798 67b0 Compacting 1@1 + 4@2 files
+2025/04/18-06:29:39.884 67b0 Generated table #149@1: 58777 keys, 2332217 bytes
+2025/04/18-06:29:39.912 67b0 Generated table #150@1: 2506 keys, 2131070 bytes
+2025/04/18-06:29:39.958 67b0 Generated table #151@1: 17850 keys, 2162246 bytes
+2025/04/18-06:29:40.000 67b0 Generated table #152@1: 40630 keys, 786603 bytes
+2025/04/18-06:29:40.000 67b0 Compacted 1@1 + 4@2 files => 7412136 bytes
+2025/04/18-06:29:40.002 67b0 compacted to: files[ 0 0 4 0 0 0 0 ]
+2025/04/18-06:29:40.003 67b0 Delete type=2 #142
+2025/04/18-06:29:40.003 67b0 Delete type=2 #143
+2025/04/18-06:29:40.003 67b0 Delete type=2 #144
+2025/04/18-06:29:40.003 67b0 Delete type=2 #145
+2025/04/18-06:29:40.003 67b0 Delete type=2 #148

@@ -1,3 +1,6 @@
-2025/04/17-10:27:59.355 5928 Reusing MANIFEST C:\Users\Hrishi\Desktop\Beta\.wwebjs_auth\session\Default\Local Storage\leveldb/MANIFEST-000001
-2025/04/17-10:27:59.358 5928 Recovering log #3
-2025/04/17-10:27:59.359 5928 Reusing old log C:\Users\Hrishi\Desktop\Beta\.wwebjs_auth\session\Default\Local Storage\leveldb/000003.log 
+2025/04/18-01:01:16.897 4bdc Reusing MANIFEST C:\Users\USER\Desktop\Beta\tommy.beta\.wwebjs_auth\session\Default\Local Storage\leveldb/MANIFEST-000001
+2025/04/18-01:01:16.898 4bdc Recovering log #3
+2025/04/18-01:01:16.899 4bdc Reusing old log C:\Users\USER\Desktop\Beta\tommy.beta\.wwebjs_auth\session\Default\Local Storage\leveldb/000003.log 
+2025/04/18-01:41:27.514 36a4 Level-0 table #5: started
+2025/04/18-01:41:27.528 36a4 Level-0 table #5: 16462 bytes OK
+2025/04/18-01:41:27.533 36a4 Delete type=0 #3

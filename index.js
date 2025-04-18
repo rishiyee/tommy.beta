@@ -22,7 +22,7 @@ client.on('message', async (message) => {
     const userText = message.body.trim().toLowerCase();
 
     // Trigger only on greetings
-    const greetings = ['hi', 'hello', 'hai', 'helo'];
+    const greetings = ['hi', 'hello', 'hai', 'helo','hlo'];
     const isGreeting = greetings.includes(userText);
 
     if (isGreeting) {
@@ -67,8 +67,8 @@ async function sendRoomRates(userPhone) {
 2️⃣ *Premium Pool & Mountain View* – ₹8,500/night  
 3️⃣ *Deluxe Pool & Forest View* – ₹8,000/night  
 4️⃣ *Deluxe Lawn View* – ₹8,000/night  
-5️⃣ *Honeymoon Suite* – ₹13,000/night  
-6️⃣ *Pool Villa* – ₹15,000/night
+5️⃣ *Honeymoon Suite* – ₹15,000/night  
+6️⃣ *Pool Villa* – ₹13,000/night
 
 ✅ All rooms include modern amenities for your comfort.  
 📞 Contact us for booking assistance!
